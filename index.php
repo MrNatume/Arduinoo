@@ -21,36 +21,66 @@ $percent = round(($brightness / 255) * 100);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #09090b;
+    background: #030000;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     color: #f4f4f5;
     padding: 20px;
     position: relative;
     overflow-x: hidden;
   }
-  body::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 650px;
-    height: 650px;
-    background: radial-gradient(circle, rgba(249,115,22,0.14) 0%, rgba(0,0,0,0) 70%);
+
+  /* Fiery abstract smoke / magma wave background matching the image */
+  .bg-smoke {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 0;
     pointer-events: none;
+    background: 
+      radial-gradient(circle at 75% 30%, rgba(255, 69, 0, 0.35) 0%, rgba(180, 30, 0, 0.12) 35%, transparent 65%),
+      radial-gradient(circle at 20% 70%, rgba(220, 50, 10, 0.25) 0%, rgba(120, 20, 0, 0.1) 40%, transparent 70%),
+      radial-gradient(circle at 85% 85%, rgba(255, 100, 0, 0.2) 0%, transparent 50%),
+      linear-gradient(135deg, rgba(15, 2, 0, 0.95) 0%, rgba(3, 0, 0, 1) 100%);
   }
+
+  /* Dynamic ember particle effect */
+  .ember {
+    position: fixed;
+    background: #ff5722;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    box-shadow: 0 0 8px #ff5722, 0 0 15px #ff9800;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(100vh) translateX(0) scale(0.5);
+      opacity: 0;
+    }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.6; }
+    100% {
+      transform: translateY(-10vh) translateX(40px) scale(1.2);
+      opacity: 0;
+    }
+  }
+
   .card {
     position: relative;
     z-index: 1;
     width: 480px;
     max-width: 100%;
-    background: rgba(18, 18, 22, 0.85);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(15, 8, 8, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 87, 34, 0.22);
     padding: 38px 32px;
     border-radius: 24px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 69, 0, 0.12), inset 0 1px 0 rgba(255, 150, 100, 0.15);
     text-align: center;
   }
   h1 {
@@ -59,22 +89,23 @@ $percent = round(($brightness / 255) * 100);
     font-weight: 700;
     color: #ffffff;
     letter-spacing: -0.02em;
+    text-shadow: 0 2px 10px rgba(255, 69, 0, 0.3);
   }
   .section {
-    background: rgba(24, 24, 27, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(25, 12, 10, 0.7);
+    border: 1px solid rgba(255, 87, 34, 0.15);
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 20px;
     text-align: left;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   }
   .section-title {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #f97316;
+    color: #ff7043;
     margin-bottom: 14px;
   }
   .buttons {
@@ -91,18 +122,18 @@ $percent = round(($brightness / 255) * 100);
     cursor: pointer;
     transition: all 0.2s ease;
     flex: 1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   }
-  button:hover { transform: translateY(-1px); opacity: 0.92; }
+  button:hover { transform: translateY(-1px); opacity: 0.95; }
   button:active { transform: translateY(1px); }
 
-  .btn-on { background: linear-gradient(135deg, #16a34a, #15803d); }
-  .btn-off { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+  .btn-on { background: linear-gradient(135deg, #2e7d32, #1b5e20); box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3); }
+  .btn-off { background: linear-gradient(135deg, #c62828, #b71c1c); box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3); }
   .btn-bright { 
-    background: linear-gradient(135deg, #f97316, #ea580c); 
+    background: linear-gradient(135deg, #ff5722, #d84315); 
     margin-top: 14px; 
     width: 100%; 
-    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.35);
+    box-shadow: 0 4px 20px rgba(255, 87, 34, 0.4);
   }
   .btn-temp { 
     background: linear-gradient(135deg, #0284c7, #0369a1); 
@@ -117,16 +148,16 @@ $percent = round(($brightness / 255) * 100);
   }
   input[type="range"] {
     flex: 1;
-    accent-color: #f97316;
+    accent-color: #ff5722;
     cursor: pointer;
     height: 6px;
-    background: #27272a;
+    background: #3a1510;
     border-radius: 3px;
   }
   .slider-val {
     min-width: 48px;
     font-weight: 700;
-    color: #f97316;
+    color: #ff7043;
     font-size: 15px;
     text-align: right;
   }
@@ -135,16 +166,16 @@ $percent = round(($brightness / 255) * 100);
     margin-top: 14px;
     padding: 16px;
     border-radius: 12px;
-    background: rgba(9, 9, 11, 0.6);
-    border: 1px solid rgba(249, 115, 22, 0.2);
+    background: rgba(10, 4, 3, 0.75);
+    border: 1px solid rgba(255, 87, 34, 0.3);
     text-align: center;
-    display: <?php echo ($tempC !== null) ? 'block' : 'none'; ?>;
   }
   .temp-main {
     font-size: 32px;
     font-weight: 800;
     color: #ffffff;
     letter-spacing: -0.02em;
+    text-shadow: 0 0 10px rgba(255, 87, 34, 0.4);
   }
   .temp-sub {
     font-size: 13px;
@@ -160,8 +191,8 @@ $percent = round(($brightness / 255) * 100);
     font-weight: 600;
     display: none;
   }
-  .success { background: rgba(22, 163, 74, 0.15); color: #4ade80; border: 1px solid rgba(22, 163, 74, 0.3); }
-  .error { background: rgba(220, 38, 38, 0.15); color: #f87171; border: 1px solid rgba(220, 38, 38, 0.3); }
+  .success { background: rgba(46, 125, 50, 0.2); color: #81c784; border: 1px solid rgba(46, 125, 50, 0.4); }
+  .error { background: rgba(198, 40, 40, 0.2); color: #e57373; border: 1px solid rgba(198, 40, 40, 0.4); }
 
   .footer {
     margin-top: 22px;
@@ -169,7 +200,7 @@ $percent = round(($brightness / 255) * 100);
     color: #71717a;
   }
   .footer a {
-    color: #f97316;
+    color: #ff7043;
     text-decoration: none;
     font-weight: 600;
   }
@@ -177,6 +208,8 @@ $percent = round(($brightness / 255) * 100);
 </style>
 </head>
 <body>
+<div class="bg-smoke"></div>
+
 <div class="card">
   <h1>Controller</h1>
 
@@ -217,6 +250,18 @@ $percent = round(($brightness / 255) * 100);
 </div>
 
 <script>
+// Generate floating fiery embers
+for (let i = 0; i < 25; i++) {
+  const ember = document.createElement('div');
+  ember.className = 'ember';
+  ember.style.left = Math.random() * 100 + 'vw';
+  ember.style.width = (Math.random() * 3 + 1) + 'px';
+  ember.style.height = ember.style.width;
+  ember.style.animationDuration = (Math.random() * 6 + 4) + 's';
+  ember.style.animationDelay = (Math.random() * 5) + 's';
+  document.body.appendChild(ember);
+}
+
 function updateBrightnessLabel(val) {
   const pct = Math.round((val / 255) * 100);
   document.getElementById('brightnessLabel').textContent = pct + '%';
